@@ -6,13 +6,17 @@ import androidx.lifecycle.asLiveData
 
 class MainActivity : AppCompatActivity() {
 
-    private val preferenceStorage by lazy { PreferenceStorage(this) }
+    private lateinit var preferenceStorage: PreferenceStorage
 
-    private val protoStorage by lazy { ProtoStorage(this) }
+    private val protoStorage by lazy { UserDataStorage(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        if (!preferenceStorage.completeOnboarding) {
+            /* SHOW ONBOARDING */
+        }
 
         setupObserver()
     }

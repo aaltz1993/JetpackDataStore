@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import java.io.IOException
 
-class ProtoStorage(context: Context) {
+class UserDataStorage(context: Context) {
 
     private val dataStore = context.applicationContext.createDataStore(fileName = FILE_NAME, serializer = UserSerializer)
 
@@ -16,8 +16,9 @@ class ProtoStorage(context: Context) {
             if(exception is IOException) {
                 exception.printStackTrace()
                 emit(User.getDefaultInstance())
-            } else
+            } else {
                 throw exception
+            }
         }
 
     suspend fun updateUserID(id: Long) {
