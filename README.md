@@ -86,3 +86,48 @@ class ProtoStorage(context: Context) {
     }
 }
 ```
+
+<br/>
+
+### SharedPreferences
+
+```kotlin
+class BooleanPreference constructor(
+    private val sharedPreferences: SharedPreferences,
+    private val key: String,
+    private val defaultValue: Boolean
+): ReadWriteProperty<Any, Boolean> {
+
+    override fun getValue(thisRef: Any, property: KProperty<*>): Boolean {
+        return sharedPreferences.getBoolean(key, defaultValue)
+    }
+
+    override fun setValue(thisRef: Any, property: KProperty<*>, value: Boolean) {
+        sharedPreferences.edit { putBoolean(key, value) }
+    }
+}
+
+class DefaultPreferenceStorage(sharedPreferences: SharedPreferences) : PreferenceStorage {
+  
+		override var completeOnboarding: Boolean by BooleanPreference(sharedPreferences, PREF_KEY_COMPLETE_ONBOARDING, false)
+
+  	...
+}
+
+/* SharedPreferences + LiveData */
+class BooleanPreferenceLiveData constructor(
+    sharedPreferences: SharedPreferences,
+    key: String,
+    defaultValue: Boolean
+): PreferenceLiveData<Boolean>(sharedPreferences, key, defaultValue) {
+
+    override fun getValueFromPreferences(
+        sharedPreferences: SharedPreferences,
+        key: String,
+        defaultValue: Boolean
+    ): Boolean {
+        return sharedPreferences.getBoolean(key, defaultValue)
+    }
+}
+```
+
